@@ -63,4 +63,13 @@ class ArticleController extends AbstractController
             'article'=> $article,
         ]);
     }
+    /**
+     * @Route("/{article}/delete", name="app_article_delete")
+     */
+    public function delete(Article $article, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($article);
+        $entityManager->flush();
+        return new RedirectResponse($this->generateUrl('app_index'));
+    }
 }
