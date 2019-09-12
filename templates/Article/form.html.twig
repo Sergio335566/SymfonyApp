@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <a href="/" class="home-btn">Home</a>
+    <h1 class="h1_form">Créer un nouvel article</h1>
+    <div class="container content">
+        {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_errors(form.title) }}
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title, { attr: { class: 'form-control' } }) }}
+            </div>
+            <div class="form-group">
+                {{ form_errors(form.content) }}
+                {{ form_label(form.content) }}
+                {{ form_widget(form.content, { attr: { class: 'form-control' } }) }}
+            </div>
+            <div class="form-group">
+                {{ form_widget(form.save, { attr: { class: 'btn btn-white' }, label: 'Submit me' } ) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock body %}

@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+    <div>
+        <a class="new-btn" href="{{ path('app_article_create') }}">Create</a>
+        <h1>
+            Hey, welcome to my app
+        </h1>
+        <hr>
+
+            {% for article in article %}
+                <div class="col-12 article-post">
+                    <h2>{{ article.title }}</h2>
+                    <p>{{ article.content }}</p>
+                    <a class='btn btn-warning' href="{{ path('app_article_update', {article: article.id}) }}">Edit</a>
+                </div>
+            {% endfor %}
+
+    </div>
+{% endblock body %}
