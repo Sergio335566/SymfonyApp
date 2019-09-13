@@ -3,8 +3,9 @@
 
     <div>
 
-        <a class="new-btn" href="{{ path('app_article_create') }}">Create</a>
+        <a class="new-btn" href="{{ path('app_articles_create') }}">Create</a>
         {% if app.user %}
+            <i><span>&#128075;</span>{{ app.user.username }}</i>
             <a class='new-btn btn-info' href="{{ path('logout') }}">Logout</a>
         {% else %}
             <a class='new-btn btn-info' href="{{ path('login') }}">Login</a>
@@ -14,14 +15,14 @@
         </h1>
         <hr>
 
-            {% for article in article %}
+            {% for article in articles %}
                 <div class="col-12 article-post">
                     <h2>{{ article.title }}</h2> <i> {{ article.createdAt|date('d/m/Y') }}</i>
                     <p>{{ article.content }}</p>
                     <i> created by {{ article.author.username }}</i>
                     {% if is_granted("ROLE_USER" and article.author == app.user) %}
-                        <a class='btn btn-warning' href="{{ path('app_article_update', {article: article.id}) }}">Edit</a>
-                        <a class='btn btn-danger' href="{{ path('app_article_delete', {article: article.id}) }}">Supprimer</a>
+                        <a class='btn btn-warning' href="{{ path('app_articles_update', {article: article.id}) }}">Edit</a>
+                        <a class='btn btn-danger' href="{{ path('app_articles_delete', {article: article.id}) }}">Supprimer</a>
                     {% endif %}
                 </div>
             {% endfor %}

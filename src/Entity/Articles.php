@@ -11,7 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity()
  * @Gedmo\SoftDeleteable(timeAware=true)
  */
-class Article
+class Articles
+
 {
     use EntityTrait;
     use TimestampableEntity;

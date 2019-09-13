@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -19,6 +20,7 @@ class User implements UserInterface
      *
      * @return (Role|string)[] The user roles
      */
+
     /**
      * @var string|null
      * @ORM\Column()
@@ -31,6 +33,16 @@ class User implements UserInterface
      */
 
     private $password;
+    /**
+     * @var string|null
+     * @ORM\Column()
+     */
+    private $articlesCollection;
+    public function __construct()
+    {
+        $this->articlesCollection = new ArrayCollection();
+    }
+
     public function getRoles(): array
     {
         return [self::ROLE_USER, self::ROLE_ADMIN];
@@ -60,6 +72,22 @@ class User implements UserInterface
         return null;
     }
 
+    public function getArticlesCollection(): iterable
+    {
+        return $this->articlesCollection;
+    }
+
+    public function addArticle(Articles $articles): self {
+        $this->articlesCollection->add($articles);
+        return $this;
+    }
+
+    public function removeArticle(Articles $articles): self
+    {
+        $this->articlesCollection->remove(articles);
+
+        return $this;
+    }
     public function eraseCredentials()
     {
         // nothing to do :)
