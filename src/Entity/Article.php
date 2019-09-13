@@ -24,6 +24,12 @@ class Article
      *      max = 50
      * )
      */
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
     private $title;
 
     /**
@@ -59,5 +65,15 @@ class Article
         return $this;
     }
 
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(User $author): self
+    {
+        $this->author = $author;
+        return $this;
+    }
 
 }

@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Form\Type\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,17 +26,18 @@ class ArticleController extends AbstractController
     }
     /**
      * @Route("/create", name="app_article_create")
+     * @IsGranted("ROLE_ADMIN")
      */
-    public function create(Request $request): Response
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ArticleType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
-            $manager =  $this->getDoctrine()->getManager();
-            $manager->persist($article);
-            $manager->flush();
+            $article->setAuthor($this->getUser());
+            $entityManager->persist($article);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Article Created! Knowledge is power!');
             return new RedirectResponse("/");
@@ -46,9 +48,13 @@ class ArticleController extends AbstractController
     }
     /**
      * @Route("/{article}/update", name="app_article_update")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function update(Article $article, Request $request, EntityManagerInterface $entityManager): Response
     {
+        if ($article->getAuthor() !== $this->getUser()) {
+            return new RedirectResponse("/");
+    }
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -65,6 +71,7 @@ class ArticleController extends AbstractController
     }
     /**
      * @Route("/{article}/delete", name="app_article_delete")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Article $article, Request $request, EntityManagerInterface $entityManager): Response
     {

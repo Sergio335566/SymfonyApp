@@ -26,7 +26,8 @@ class User implements UserInterface
     private $username;
     /**
      * @var string|null
-     * @ORM\Column()
+     * @ORM\Column(unique=true, length=190)
+     * U
      */
 
     private $password;
